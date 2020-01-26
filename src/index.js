@@ -1,16 +1,17 @@
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer } = require("apollo-server");
+const { importSchema } = require("graphql-import");
 
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
+const typeDefs = importSchema("src/schema.graphql");
 
 const server = new ApolloServer({
   typeDefs,
   resolvers: {
     Query: {
-      hello: () => "Hello GraphQL!"
+      places: () => {
+        console.log("Query places");
+
+        return [];
+      }
     }
   }
 });
