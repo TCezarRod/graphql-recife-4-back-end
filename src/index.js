@@ -30,13 +30,13 @@ const server = new ApolloServer({
           obj.address || db.places.find(place => place.id === obj.id).address
         );
       },
-      competitors: obj => {
-        if (obj.competitors) return obj.competitors;
+      neighbours: obj => {
+        if (obj.neighbours) return obj.neighbours;
 
-        const competitorIDs =
-          db.places.find(place => place.id === obj.id).competitorIDs || [];
+        const neighbourIDs =
+          db.places.find(place => place.id === obj.id).neighbourIDs || [];
 
-        return competitorIDs.map(id => ({
+        return neighbourIDs.map(id => ({
           id: Number.parseInt(id)
         }));
       }

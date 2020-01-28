@@ -6,15 +6,15 @@ type Query {
 type Mutation {
   createPlace(place: PlaceInput!): Place
   updatePlace(id: ID!, place: PlaceInput!): Place
-  addCompetitor(placeId: ID!, competitorID: ID!): Place
-  removeCompetitor(placeId: ID!, competitorID: ID!): Place
+  addNeighbour(placeId: ID!, neighbourID: ID!): Place
+  removeNeighbour(placeId: ID!, neighbourID: ID!): Place
 }
 
 type Place {
   id: ID!
   name: String!
   address: Address!
-  competitors: [Place!]
+  neighbours: [Place!]
 }
 
 type Address {
@@ -27,7 +27,7 @@ type Address {
 input PlaceInput {
   name: String!
   address: AddressInput
-  competitorIDs: [ID!]
+  neighbourIDs: [ID!]
 }
 
 input AddressInput {

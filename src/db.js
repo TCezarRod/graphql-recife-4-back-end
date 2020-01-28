@@ -8,7 +8,7 @@ module.exports = {
         city: "Recife",
         country: "Brasil"
       },
-      competitorIDs: [2, 3]
+      neighbourIDs: [2]
     },
     {
       id: 2,
@@ -18,7 +18,7 @@ module.exports = {
         city: "Joao Pessoa",
         country: "Brasil"
       },
-      competitorIDs: [1]
+      neighbourIDs: [1, 4]
     },
     {
       id: 3,
@@ -28,7 +28,7 @@ module.exports = {
         city: "Salvador",
         country: "Brasil"
       },
-      competitorIDs: [1]
+      neighbourIDs: [4, 5]
     },
     {
       id: 4,
@@ -38,7 +38,7 @@ module.exports = {
         city: "Recife",
         country: "Brasil"
       },
-      competitorIDs: [5]
+      neighbourIDs: [5]
     },
     {
       id: 5,
@@ -48,7 +48,7 @@ module.exports = {
         city: "Recife",
         country: "Brasil"
       },
-      competitorIDs: [4]
+      neighbourIDs: [4]
     }
   ],
   lastId: 1
