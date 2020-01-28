@@ -9,8 +9,8 @@ const server = new ApolloServer({
   typeDefs,
   resolvers: {
     Query: {
-      places: (_root, { first, offset }) => {
-        return db.places.slice(offset, first + offset);
+      places: (_root, { first, offset = 0 }) => {
+        return db.places.slice(offset, first && first + offset);
       }
     },
     Mutation: {
