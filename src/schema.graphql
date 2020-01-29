@@ -6,6 +6,7 @@ type Query {
 type Mutation {
   createPlace(place: PlaceInput!): Place
   updatePlace(id: ID!, place: PlaceInput!): Place
+  deletePlace(id: ID): Boolean
   addNeighbour(placeId: ID!, neighbourID: ID!): Place
   removeNeighbour(placeId: ID!, neighbourID: ID!): Place
 }

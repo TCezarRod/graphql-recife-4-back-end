@@ -19,6 +19,32 @@ const server = new ApolloServer({
         db.places.push(newPlace);
 
         return newPlace;
+      },
+      updatePlace: (_root, { id, place }) => {
+        const index = db.places.findIndex(
+          ({ id: placeId }) => placeId === Number.parseInt(id)
+        );
+
+        if (index < 0) return null;
+
+        Object.keys(place).forEach(key => {
+          if (place[key]) {
+            if (key === "neighbourIDs") {
+              db.places[index][key] = place[key].map(id => Number.parseInt(id));
+            } else {
+              db.places[index][key] = place[key];
+            }
+          }
+        });
+
+        return db.places[index];
+      },
+      deletePlace: (_root, { id }) => {
+        const index = db.places.findIndex(
+          ({ id: placeId }) => placeId === Number.parseInt(id)
+        );
+
+        if (index >= 0) db.places.splice(index, 1);
       }
     },
     Place: {
@@ -36,9 +62,11 @@ const server = new ApolloServer({
         const neighbourIDs =
           db.places.find(place => place.id === obj.id).neighbourIDs || [];
 
-        return neighbourIDs.map(id => ({
-          id: Number.parseInt(id)
-        }));
+        return neighbourIDs
+          .filter(id => db.places.find(place => place.id === id))
+          .map(id => ({
+            id: Number.parseInt(id)
+          }));
       }
     }
   }
