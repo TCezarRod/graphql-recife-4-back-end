@@ -41,9 +41,7 @@ const server = new ApolloServer({
         return db.places[index];
       },
       deletePlace: (_root, { id }) => {
-        const index = db.places.findIndex(
-          ({ id: placeId }) => placeId === Number.parseInt(id)
-        );
+        const index = _.findIndex(db.places, { id });
 
         if (index >= 0) db.places.splice(index, 1);
       }
