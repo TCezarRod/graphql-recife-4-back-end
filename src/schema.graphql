@@ -14,13 +14,13 @@ type Mutation {
 type Place {
   id: ID!
   name: String!
-  address: Address!
+  address: Address
   neighbours: [Place!]
 }
 
 type Address {
-  line1: String!
-  line2: String
+  streetName: String!
+  number: Int
   city: String!
   country: String!
 }
@@ -32,8 +32,8 @@ input PlaceInput {
 }
 
 input AddressInput {
-  line1: String!
-  line2: String
-  city: String!
-  country: String!
+  streetName: String
+  number: Int
+  city: String
+  country: String
 }

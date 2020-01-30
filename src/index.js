@@ -1,5 +1,6 @@
 const { ApolloServer } = require("apollo-server");
 const { importSchema } = require("graphql-import");
+const _ = require("lodash");
 
 const db = require("./db");
 
@@ -9,31 +10,31 @@ const server = new ApolloServer({
   typeDefs,
   resolvers: {
     Query: {
+      place: (_root, { id }) => {
+        if (!_.find(db.places, { id })) return null;
+
+        return { id };
+      },
       places: (_root, { first, offset = 0 }) => {
         return db.places.slice(offset, first && first + offset);
       }
     },
     Mutation: {
       createPlace: (_root, { place }) => {
-        const newPlace = { ...place, id: ++db.lastId };
+        const id = ++db.lastId;
+        const newPlace = { ...place, id: id.toString() };
         db.places.push(newPlace);
 
         return newPlace;
       },
       updatePlace: (_root, { id, place }) => {
-        const index = db.places.findIndex(
-          ({ id: placeId }) => placeId === Number.parseInt(id)
-        );
+        const index = _.findIndex(db.places, { id });
 
         if (index < 0) return null;
 
         Object.keys(place).forEach(key => {
           if (place[key]) {
-            if (key === "neighbourIDs") {
-              db.places[index][key] = place[key].map(id => Number.parseInt(id));
-            } else {
-              db.places[index][key] = place[key];
-            }
+            db.places[index][key] = place[key];
           }
         });
 
@@ -49,24 +50,22 @@ const server = new ApolloServer({
     },
     Place: {
       name: obj => {
-        return obj.name || db.places.find(place => place.id === obj.id).name;
+        return obj.name || _.find(db.places, { id: obj.id }).name;
       },
       address: obj => {
-        return (
-          obj.address || db.places.find(place => place.id === obj.id).address
-        );
+        return obj.address || _.find(db.places, { id: obj.id }).address;
       },
       neighbours: obj => {
         if (obj.neighbours) return obj.neighbours;
 
         const neighbourIDs =
-          db.places.find(place => place.id === obj.id).neighbourIDs || [];
+          obj.neighbourIDs ||
+          _.find(db.places, { id: obj.id }).neighbourIDs ||
+          [];
 
         return neighbourIDs
-          .filter(id => db.places.find(place => place.id === id))
-          .map(id => ({
-            id: Number.parseInt(id)
-          }));
+          .filter(id => _.find(db.places, { id }))
+          .map(id => ({ id }));
       }
     }
   }
